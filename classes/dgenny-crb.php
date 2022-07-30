@@ -54,7 +54,7 @@ class dGenny_CRB
     public function carbon_fields_values_are_available()
     {
         /* retrieve the values of your Carbon Fields related to your plugin */
-        var_dump( carbon_get_theme_option( 'oppo1' ) );
+        // var_dump( carbon_get_theme_option( 'oppo1' ) );
         /* do all the stuff that does rely on values of your Carbon Fields */
     }
 
