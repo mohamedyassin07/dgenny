@@ -43,6 +43,12 @@ class dGenny_Settings extends AdminPageFramework
                 'description' => 'Get endpoint url from <a href="https://pipedream.com" target="_blank" >https://pipedream.com</a> '
             ),
             array(
+                'field_id' => 'external_debugging_areas',
+                'type' => 'textarea',
+                'title' => 'external_debugging_areas',
+                'description' => 'Get endpoint url from <a href="https://pipedream.com" target="_blank" >https://pipedream.com</a> '
+            ),
+            array(
             'field_id' => 'debug',
             'title' => __('Enable Debug', 'dgenny') ,
             'type' => 'radio',

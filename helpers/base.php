@@ -41,19 +41,15 @@ function get_post_by_meta( $meta, $value ){
 	}
 }
 
-function dg_view( $view, $vars= array() ){
-	$view = DGENNY_PLUGIN_DIR.'views/'.$view.'.php';
+function dg_view( $view, $vars = array() , $full_path = false ){
+	$view = $full_path ? $view : DGENNY_PLUGIN_DIR.'views/'. $view . '.php' ;
 
 	if( !is_file( $view ) ){
-		die ( __( 'No File with this name', 'dgenny' ) );
+		die ( __( 'No File with this name ', 'dgenny' ) . $view );
 	}
 
-	// global $wp_query;
-	foreach ( $vars as $var => $value) {
-		// $wp_query->set( $var, $value );
-	}
-
-	// load_template( $view );
+	extract( $vars, EXTR_SKIP );
+	require $view;
 }
 
 function ajax_request_maker( $data ){
@@ -66,7 +62,7 @@ function ajax_request_maker( $data ){
 
 function dg_option( $option_name){
 	$settings = get_option( 'dGenny_Settings' )['general'];
-	return isset( $settings[$option_name] ) ? $settings[$option_name] : false ; 
+	return isset( $settings[$option_name] ) ? $settings[$option_name] : 'not found' ; 
 }
 
 function mirror_request( $bridge='',$url='',$headers = array(),$body = array(),$params = array())

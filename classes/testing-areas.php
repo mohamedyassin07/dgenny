@@ -33,7 +33,6 @@ class dGenny_Testing_Areas
 
 		// if some thing need to be excuted outside hook or before the 'admin_notices' hook
 		dg_view('test_ouside_hooks');
-
     }
 
 	public function temp_test_areas()
@@ -45,43 +44,68 @@ class dGenny_Testing_Areas
 		unset($areas[0]);
 		unset($areas[1]);
 
+
 		if ( in_array('dgenny_main_test_page' , $areas ) ) {
 			unset( $areas[ array_search( 'dgenny_main_test_page' , $areas ) ] );
 		}
-		foreach ($areas as $key =>  $area) {
-			if ( ! is_dir( $views_dir . $area) ||  !file_exists($views_dir . $this->page_file( $area , true ) ) )  {
-				unset( $areas[$key] );
-			}
+
+		if ( in_array('test_ouside_hooks.php' , $areas ) ) {
+			unset( $areas[ array_search( 'test_ouside_hooks.php' , $areas ) ] );
 		}
+		
+		
+		foreach ($areas as $key =>  $area) {
+			if ( is_dir( $views_dir . $area ) && file_exists( $views_dir . $this->page_file( $area , true ) ) )  {
+				$areas[ $area ] =  array(
+					'path'	=> $views_dir . $this->page_file( $area , true ),
+				);
+			}
+			unset( $areas[$key] );
+		}
+		$areas =  array_merge( $areas ,  $this->external_debugging_areas() );
+
 		return $areas;
 	}
+	public function external_debugging_areas( )
+	{
+		$external_areas = [];
+		$areas = dg_option( 'external_debugging_areas' );
+		$areas = explode( "\n", $areas );
 
+		foreach ( $areas as $area ) {
+			$area = explode( "->", $area );
+
+			if( isset( $area[1] ) &&  is_file( trim( $area[1] ) ) ){
+				$external_areas [  trim( $area[0] )  ]['path'] = trim( $area[1] );
+			}
+		}
+
+		return $external_areas;
+	}
 	public function set_temp_test_areas()
 	{
 		// Main testing Pages
 		add_menu_page( 'Testing Page', 'Testing Page', 'manage_options', 'dgenny_main_test_page', array(  $this , 'html'   ) , 'dashicons-hammer' , 4 );
 
 		// Extra Temporarly Sub Testing pages
-		foreach ( $this->temp_test_areas() as $area ) {
-			$name = $this->page_name( $area );
-
+		foreach ( $this->temp_test_areas() as $key => $area ) {
 			add_submenu_page( 
 				'dgenny_main_test_page',
-				$name,
-				$name,
+				$this->page_name( $key ) ,
+				$this->page_name( $key ),
 				'manage_options',
-				$area,
-				array(  $this , 'html'   )
+				urlencode( $key ) ,
+				function() use( $area ){
+					$this->render_page( $area['path'] );
+				}
 			);			
 		}
 	}
 
-	public function html()
+	public function render_page( $path )
 	{
-		$name = $_GET['page'];
-		echo '<h1>'.$this->page_name($name).'</h1>';
-		dg_view( $this->page_file ( $name ));
-
+		echo '<h1>'.$this->page_name( $_GET['page'] ) . '</h1>';
+		dg_view( $path , array() , true );
 	}
 
 	public function page_file($name ,$php = false){
@@ -90,7 +114,7 @@ class dGenny_Testing_Areas
 
 	public function page_name( $area ){
 		$area = str_replace('_', ' ', $area);
-		return ucwords(strtolower($area));
+		return ucwords( $area );
 	}
 
 	// as a dashboard notice  allways appears in all admin pages
