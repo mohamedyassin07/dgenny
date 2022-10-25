@@ -4,13 +4,13 @@
  *
  * @package       DGENNY
  * @author        Mohamed Yassin
- * @version       1.0.0
+ * @version       1.1.0
  *
  * @wordpress-plugin
  * Plugin Name:   Debugging Genny
  * Plugin URI:    https://mydomain.com
  * Description:   The wordpress developers genny 🧞 helps them in their daily work routine.
- * Version:       1.0.0
+ * Version:       1.1.0
  * Author:        Mohamed Yassin
  * Author URI:    https://developeryassin.wordpress.com
  * Text Domain:   dgenny
@@ -26,7 +26,7 @@ define( 'DGENNY_NAME',			'Debugging Genny' );
 define( 'DGENNY_SLUG',			'dgenny' );
 
 // Plugin version
-define( 'DGENNY_VERSION',		'1.0.0' );
+define( 'DGENNY_VERSION',		'1.1.0' );
 
 // Plugin Root File
 define( 'DGENNY_PLUGIN_FILE',	__FILE__ );

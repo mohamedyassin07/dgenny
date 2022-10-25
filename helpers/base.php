@@ -60,9 +60,9 @@ function ajax_request_maker( $data ){
 	dg_view( 'ajax_request', $data );	
 }
 
-function dg_option( $option_name){
-	$settings = get_option( 'dGenny_Settings' )['general'];
-	return isset( $settings[$option_name] ) ? $settings[$option_name] : 'not found' ; 
+function dg_option( $option_name , $default = false ){
+	$settings = get_option( 'dGenny_Settings' );
+	return isset( $settings['general'] ) && isset( $settings['general'][$option_name] ) ? $settings['general'][$option_name] : $default ; 
 }
 
 function mirror_request( $bridge='',$url='',$headers = array(),$body = array(),$params = array())

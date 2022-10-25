@@ -32,51 +32,19 @@ class dGenny_Testing_Areas
 		add_action('admin_menu', array( $this,  'set_temp_test_areas' ) );
 
 		// if some thing need to be excuted outside hook or before the 'admin_notices' hook
-		dg_view('test_ouside_hooks');
+		// dg_view('test_ouside_hooks');
     }
 
-	public function temp_test_areas()
-	{
-		// create plugins/dgenny/views/{{folder/page name}}/index.php file
-		// to add new sub testing page here
-		$views_dir = DGENNY_PLUGIN_DIR . 'views/' ;
-		$areas =  scandir( $views_dir );
-		unset($areas[0]);
-		unset($areas[1]);
-
-
-		if ( in_array('dgenny_main_test_page' , $areas ) ) {
-			unset( $areas[ array_search( 'dgenny_main_test_page' , $areas ) ] );
-		}
-
-		if ( in_array('test_ouside_hooks.php' , $areas ) ) {
-			unset( $areas[ array_search( 'test_ouside_hooks.php' , $areas ) ] );
-		}
-		
-		
-		foreach ($areas as $key =>  $area) {
-			if ( is_dir( $views_dir . $area ) && file_exists( $views_dir . $this->page_file( $area , true ) ) )  {
-				$areas[ $area ] =  array(
-					'path'	=> $views_dir . $this->page_file( $area , true ),
-				);
-			}
-			unset( $areas[$key] );
-		}
-		$areas =  array_merge( $areas ,  $this->external_debugging_areas() );
-
-		return $areas;
-	}
 	public function external_debugging_areas( )
 	{
 		$external_areas = [];
-		$areas = dg_option( 'external_debugging_areas' );
+		$areas = dg_option( 'external_debugging_areas' , '' );
 		$areas = explode( "\n", $areas );
 
 		foreach ( $areas as $area ) {
 			$area = explode( "->", $area );
-
-			if( isset( $area[1] ) &&  is_file( trim( $area[1] ) ) ){
-				$external_areas [  trim( $area[0] )  ]['path'] = trim( $area[1] );
+			if( isset( $area[1] ) &&  is_file( WP_CONTENT_DIR . '/' . trim( $area[1] ) ) ){
+				$external_areas [ trim( $area[0] ) ]['path'] = WP_CONTENT_DIR . '/' . trim( $area[1] );
 			}
 		}
 
@@ -84,17 +52,28 @@ class dGenny_Testing_Areas
 	}
 	public function set_temp_test_areas()
 	{
-		// Main testing Pages
-		add_menu_page( 'Testing Page', 'Testing Page', 'manage_options', 'dgenny_main_test_page', array(  $this , 'html'   ) , 'dashicons-hammer' , 4 );
+		// Main testing Area
+		add_menu_page(
+			'Testing Page',
+			'Testing Page',
+			'manage_options',
+			'dgenny_main_test_page',
+			function(){
+				$path = DGENNY_PLUGIN_DIR . 'views/dgenny_main_test_page/dgenny_main_test_page.php';
+				$this->render_page( $path );
+			},
+			'dashicons-hammer',
+			4
+		);
 
 		// Extra Temporarly Sub Testing pages
-		foreach ( $this->temp_test_areas() as $key => $area ) {
+		foreach ( $this->external_debugging_areas() as $key => $area ) {
 			add_submenu_page( 
 				'dgenny_main_test_page',
 				$this->page_name( $key ) ,
 				$this->page_name( $key ),
 				'manage_options',
-				urlencode( $key ) ,
+				urlencode( strtolower( $key ) ) ,
 				function() use( $area ){
 					$this->render_page( $area['path'] );
 				}
@@ -117,7 +96,7 @@ class dGenny_Testing_Areas
 		return ucwords( $area );
 	}
 
-	// as a dashboard notice  allways appears in all admin pages
+	// as a dashboard notice  always appears in all admin pages
 	public function debug_admin_notice(){
 		echo '<div class="notice notice-warning is-dismissible">';
 		dg_view('admin_notice');
