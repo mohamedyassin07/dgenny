@@ -43,9 +43,9 @@ class dGenny_Settings extends AdminPageFramework
                 'description' => __( 'Get endpoint url from <a href="https://pipedream.com" target="_blank" >https://pipedream.com</a>' )
             ),
             array(
-                'field_id' => 'External Debugging Areas',
+                'field_id' => 'external_debugging_areas',
                 'type' => 'textarea',
-                'title' => 'external_debugging_areas',
+                'title' => __( 'External Debugging Areas' ),
                 'description' => __( 'file path part after the wp-content folder eg.</br><b>Page Title => plugins/primera/tests/test.php</b>' )
             ),
             array(

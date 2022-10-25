@@ -95,7 +95,7 @@ if ( ! class_exists( 'Dgenny' ) ) :
 				self::$instance->add_hooks();
 
 				// run required classes
-				new dGenny_CRB;
+				//new dGenny_CRB;
 				new dGenny_Settings;
 				new dGenny_Testing_Areas;
 				new dGenny_Request_Mirror;
@@ -127,7 +127,7 @@ if ( ! class_exists( 'Dgenny' ) ) :
 			require_once DGENNY_PLUGIN_DIR . 'helpers/helpers.php';
 			
 			require_once DGENNY_PLUGIN_DIR . 'libs/admin-page-framework-core/admin-page-framework.php';
-			require_once DGENNY_PLUGIN_DIR . 'classes/dgenny-crb.php';
+			//require_once DGENNY_PLUGIN_DIR . 'classes/dgenny-crb.php';
 			require_once DGENNY_PLUGIN_DIR . 'classes/settings-page.php';
 			require_once DGENNY_PLUGIN_DIR . 'classes/testing-areas.php';
 			require_once DGENNY_PLUGIN_DIR . 'classes/request-mirror.php';

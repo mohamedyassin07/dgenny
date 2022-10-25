@@ -52,14 +52,6 @@ function dg_view( $view, $vars = array() , $full_path = false ){
 	require $view;
 }
 
-function ajax_request_maker( $data ){
-	$data['ajax_url'] 		= admin_url( 'admin-ajax.php' );
-	$data['waiting_msg']	= __( 'Waiting Response . . . . .', 'dgenny' );
-	$data['response_div']	= isset( $data['response_div']) ? $data['response_div'] : $data['action']."_response";
-	$data['form']			= isset( $data['form']) ? $data['form'] : $data['action']."_form";
-	dg_view( 'ajax_request', $data );	
-}
-
 function dg_option( $option_name , $default = false ){
 	$settings = get_option( 'dGenny_Settings' );
 	return isset( $settings['general'] ) && isset( $settings['general'][$option_name] ) ? $settings['general'][$option_name] : $default ; 
