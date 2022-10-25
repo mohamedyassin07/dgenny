@@ -86,9 +86,7 @@ if ( ! class_exists( 'Dgenny' ) ) :
 
 				self::$instance	= new Dgenny;
 
-				if( DGENNY_DEBUG ){
-					self::$instance->enable_debug_enviroment_settings();
-				}
+				self::$instance->enable_debug_enviroment_settings();
 
 				self::$instance->includes();
 				//self::$instance->plugin_updater();
@@ -111,9 +109,19 @@ if ( ! class_exists( 'Dgenny' ) ) :
 
 		public function enable_debug_enviroment_settings()
 		{
-			ini_set('display_errors', 1); 
-			ini_set('display_startup_errors', 1); 
-			error_reporting(E_ALL);		
+			$dgenny_settings = get_option( DGENNY_SLUG.'_Settings' );
+
+			if(
+				DGENNY_DEBUG &&
+				isset ( $dgenny_settings['general'] ) &&
+				isset ( $dgenny_settings['general']['show_php_errors'] ) &&
+				$dgenny_settings['general']['show_php_errors'] === '1'
+			){
+				ini_set('display_errors', 1); 
+				ini_set('display_startup_errors', 1); 
+				error_reporting(E_ALL);		
+	
+			}
 		}
 		
 		/**

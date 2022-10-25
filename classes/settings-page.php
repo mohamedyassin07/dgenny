@@ -49,15 +49,27 @@ class dGenny_Settings extends AdminPageFramework
                 'description' => __( 'file path part after the wp-content folder eg.</br><b>Page Title => plugins/primera/tests/test.php</b>' )
             ),
             array(
-            'field_id' => 'debug',
-            'title' => __('Enable Debug', 'dgenny') ,
-            'type' => 'radio',
-            'label' => array(
-                    '0' => 'Disable',
-                    '1' => 'Enable',
+                'field_id' => 'debug',
+                'title' => __('Enable Debug', 'dgenny') ,
+                'type' => 'radio',
+                'label' => array(
+                        '0' => __( 'Disable', 'dgenny'),
+                        '1' => __( 'Enable', 'dgenny'),
+                    ),
+                'default' => '0',
+            ),
+            array(
+                'field_id' => 'show_php_errors',
+                'title' => __( 'Show PHP Errors', 'dgenny') ,
+                'type' => 'radio',
+                'label' => array(
+                    '0' => __( 'Disable', 'dgenny'),
+                    '1' => __( 'Enable', 'dgenny'),
                 ),
-            'default' => '1',
-        ));
+                'default' => '0',
+                'description' => __( 'DGENNY_DEBUG constant must be enabled also' )
+            )
+        );
 
         // Submit Button
         $this->addSettingFields('general', array(

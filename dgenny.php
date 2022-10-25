@@ -4,13 +4,13 @@
  *
  * @package       DGENNY
  * @author        Mohamed Yassin
- * @version       1.1.0
+ * @version       1.2.0
  *
  * @wordpress-plugin
  * Plugin Name:   Debugging Genny
  * Plugin URI:    https://mydomain.com
  * Description:   The wordpress developers genny 🧞 helps them in their daily work routine.
- * Version:       1.1.0
+ * Version:       1.2.0
  * Author:        Mohamed Yassin
  * Author URI:    https://developeryassin.wordpress.com
  * Text Domain:   dgenny
@@ -26,7 +26,7 @@ define( 'DGENNY_NAME',			'Debugging Genny' );
 define( 'DGENNY_SLUG',			'dgenny' );
 
 // Plugin version
-define( 'DGENNY_VERSION',		'1.1.0' );
+define( 'DGENNY_VERSION',		'1.2.0' );
 
 // Plugin Root File
 define( 'DGENNY_PLUGIN_FILE',	__FILE__ );
@@ -42,14 +42,19 @@ define( 'DGENNY_PLUGIN_URL',	plugin_dir_url( DGENNY_PLUGIN_FILE ) );
 
 // dGenny debug status
 if ( ! defined('DGENNY_DEBUG') ) {
-	$dgenny_settings = get_option( DGENNY_SLUG );
-	if( 
-		isset ( $_GET['dgenny_debug'] ) || 
-		( isset ( $dgenny_settings['general']['dgenny_debug'] ) &&  $dgenny_settings['general']['dgenny_debug'] != 0 )
+	$dgenny_settings = get_option( DGENNY_SLUG.'_Settings' );
+
+	if(
+		isset ( $_GET['dgenny_debug'] ) ||
+		(
+			isset ( $dgenny_settings['general'] ) &&
+			isset ( $dgenny_settings['general']['dgenny_debug'] ) &&
+			$dgenny_settings['general']['dgenny_debug'] === '1'
+		)
 	){
 		define( 'DGENNY_DEBUG',	true );
 	}else {
-		define( 'DGENNY_DEBUG',	true );
+		define( 'DGENNY_DEBUG',	false );
 	}
 }
 
